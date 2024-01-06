@@ -6,13 +6,13 @@ function getCatalog (options) {
   let {
     dirPath,
     catalog,
-    extname
+    extname = ['.md']
   } = options
 
   if(typeof catalog === 'undefined') {
     catalog = {
       dirname: '目录',
-      mdFiles: [],
+      files: [],
       children: []
     }
   }
@@ -25,11 +25,15 @@ function getCatalog (options) {
     const direntList = fs.readdirSync(dirPath, { withFileTypes: true })
 
     direntList.forEach(dirent => {
+      console.log(
+        extname,
+        path.extname(dirent.name)
+      )
 
       if(dirent.isDirectory()) {
         const newCatalog = {
           dirname: dirent.name,
-          mdFiles: [],
+          files: [],
           children: []
         }
         catalog.children.push(newCatalog)
@@ -38,8 +42,8 @@ function getCatalog (options) {
           catalog: newCatalog,
           extname
         })
-      } else if (path.extname(dirent.name) === `.${extname}`) {
-        catalog.mdFiles.push(path.join(dirPath, dirent.name))
+      } else if (extname.includes(path.extname(dirent.name))) {
+        catalog.files.push(path.join(dirPath, dirent.name))
       }
 
 
@@ -54,14 +58,14 @@ function getCatalog (options) {
 }
 
 
-function getCatalogFileContent (catalog, content, indentNum) {
+function getCatalogFileContent (options) {
+  let {
+    catalog,
+    content = '',
+    indentNum = 0,
+    showExtname = true
+  } = options
 
-  if(typeof content === 'undefined') {
-    content = ''
-  }
-  if(typeof indentNum === 'undefined') {
-    indentNum = 0
-  }
   
   if(catalog.dirname === '目录') {
     content = `# ${catalog.dirname}`
@@ -73,12 +77,19 @@ function getCatalogFileContent (catalog, content, indentNum) {
   if(catalog.children instanceof Array && catalog.children.length > 0) {
 
     catalog.children.forEach(catalogItem => {
-      content += getCatalogFileContent(catalogItem, content, indentNum + 1)
+      content += getCatalogFileContent({
+        catalog: catalogItem,
+        content,
+        indentNum: indentNum + 1,
+        showExtname
+      })
     })
   }
 
-  catalog.mdFiles.forEach(fileFullName => {
-    const fileBaseName = path.basename(fileFullName, '.md')
+  catalog.files.forEach(fileFullName => {
+
+    const fileBaseName = showExtname ? path.basename(fileFullName) : path.basename(fileFullName, path.extname(fileFullName))
+
     if(fileBaseName !== '目录') {
       content += `\n${getNBSP(indentNum + 1)}- [${fileBaseName}](${fileFullName})`
     }
@@ -91,8 +102,10 @@ function getCatalogFileContent (catalog, content, indentNum) {
 function getCatalogFile (options) {
 
   const {
-    targetPath,
-    extname = 'md'
+    targetPath = path.join(__dirname, './markdown'),
+    extname = ['.md'],
+    outputFileName = '目录.md',
+    showExtname = true
   } = options
 
   const catalog = getCatalog({
@@ -100,9 +113,12 @@ function getCatalogFile (options) {
     extname
   })
 
-  const content = getCatalogFileContent(catalog)
+  const content = getCatalogFileContent({
+    catalog,
+    showExtname
+  })
 
-  fs.writeFileSync('目录.md', content)
+  fs.writeFileSync(outputFileName, content)
 
 }
 
@@ -117,7 +133,5 @@ function getNBSP(num) {
 }
 
 module.exports = {
-  getCatalog,
-  getCatalogFileContent,
   getCatalogFile
 }

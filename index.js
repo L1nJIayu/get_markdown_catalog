@@ -1,9 +1,7 @@
-const path = require('path')
-const { getCatalogFile } = require('./utils')
-
-
-getCatalogFile({
-  targetPath: path.join(__dirname, './markdown'),
-  extname: 'md'
+require('./utils').getCatalogFile({
+  targetPath: './markdown',
+  extname: ['.md', '.txt'],
+  outputFileName: '目录.md',
+  showExtname: true
 })
 
