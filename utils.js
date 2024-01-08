@@ -30,7 +30,7 @@ function getCatalog (options) {
         extname,
         path.extname(dirent.name)
       )
-      if(dirent.isDirectory() && !ignoreDirectoryPattern.test(dirent.name)) {
+      if(dirent.isDirectory() && !(ignoreDirectoryPattern && ignoreDirectoryPattern.test(dirent.name))) {
         const newCatalog = {
           dirname: dirent.name,
           files: [],
@@ -103,12 +103,16 @@ function getCatalogFileContent (options) {
 function getCatalogFile (options) {
 
   const {
-    targetPath = path.join(__dirname, './markdown'),
+    targetPath,
     extname = ['.md'],
     outputFileName = '目录.md',
     showExtname = true,
     ignoreDirectoryPattern
   } = options
+
+  if(typeof targetPath === 'undefined') {
+    throw new Error('配置项【targetPath】不能为空')
+  }
 
   const catalog = getCatalog({
     dirPath: targetPath,

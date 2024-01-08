@@ -1,5 +1,5 @@
 # get_markdown_catalog
-一个可以直接获取指定路径下，所有Markdown文件目录的小工具
+一个可以直接获取指定路径下，所有Markdown文件目录的小工具。
 
 
 
@@ -25,12 +25,14 @@ npm run dev
 
 在`index.js`中，可以进行配置修改
 
-| 配置           | 描述                                                         |
-| -------------- | ------------------------------------------------------------ |
-| targetPath     | 目标目录路径，默认为`./markdown`                             |
-| extname        | 需要遍历的文件后缀（即文件类型），默认为`['.md']`,请以`.`开头 |
-| outputFileName | 目录输入的最终文件名，默认为`目录.md`                        |
-| showExtname    | 输入的内容，文件名是否要显示后缀，默认为`true`               |
+| 配置                   | 描述                                                         |
+| ----------------------  | ------------------------------------------------------------ |
+| targetPath             | 必填。目标目录路径，例如为`E:\\BaiduSyncdisk\\学习笔记`、`./markdown` |
+| extname                | 需要遍历的文件后缀（即文件类型），默认为`['.md']`,请以`.`开头 |
+| outputFileName         | 目录输入的最终文件名，默认为`目录.md`                        |
+| showExtname            | 输入的内容，文件名是否要显示后缀，默认为`true`               |
+| showExtname            | 输入的内容，文件名是否要显示后缀，默认为`true`               |
+| ignoreDirectoryPattern | 需要忽略的文件夹名称，正则表达式                             |
 
 
 
@@ -38,15 +40,16 @@ npm run dev
 
 ```js
 require('./utils').getCatalogFile({
-  targetPath: './markdown',
+  targetPath: 'E:\\BaiduSyncdisk\\学习笔记',
   extname: ['.md', '.txt'],
   outputFileName: '目录.md',
-  showExtname: true
+  showExtname: true,
+  ignoreDirectoryPattern: /\.assets$/
 })
 ```
 
 
 
-![image-20240106184930019](README.assets/image-20240106184930019.png)
+![image-20240108180511282](README.assets/image-20240108180511282.png)
 
-![image-20240106185055819](README.assets/image-20240106185055819.png)
+![image-20240108180448069](README.assets/image-20240108180448069.png)
