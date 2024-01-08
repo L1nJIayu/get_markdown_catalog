@@ -71,7 +71,7 @@ function getCatalogFileContent (options) {
     content = `# ${catalog.dirname}`
   } else {
 
-    content = `\n${getNBSP(indentNum)}- *${catalog.dirname}*`
+    content = `\n${getNBSP(indentNum)}- 📂*${catalog.dirname}*`
   }
 
   if(catalog.children instanceof Array && catalog.children.length > 0) {
@@ -91,7 +91,7 @@ function getCatalogFileContent (options) {
     const fileBaseName = showExtname ? path.basename(fileFullName) : path.basename(fileFullName, path.extname(fileFullName))
 
     if(fileBaseName !== '目录') {
-      content += `\n${getNBSP(indentNum + 1)}- [${fileBaseName}](${fileFullName})`
+      content += `\n${getNBSP(indentNum + 1)}- 📋[${fileBaseName}](${fileFullName})`
     }
   })
   
