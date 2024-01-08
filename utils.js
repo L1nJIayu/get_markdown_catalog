@@ -6,7 +6,8 @@ function getCatalog (options) {
   let {
     dirPath,
     catalog,
-    extname = ['.md']
+    extname = ['.md'],
+    ignoreDirectoryPattern
   } = options
 
   if(typeof catalog === 'undefined') {
@@ -29,8 +30,7 @@ function getCatalog (options) {
         extname,
         path.extname(dirent.name)
       )
-
-      if(dirent.isDirectory()) {
+      if(dirent.isDirectory() && !ignoreDirectoryPattern.test(dirent.name)) {
         const newCatalog = {
           dirname: dirent.name,
           files: [],
@@ -40,6 +40,7 @@ function getCatalog (options) {
         getCatalog({
           dirPath: path.join(dirPath, dirent.name),
           catalog: newCatalog,
+          ignoreDirectoryPattern,
           extname
         })
       } else if (extname.includes(path.extname(dirent.name))) {
@@ -105,12 +106,14 @@ function getCatalogFile (options) {
     targetPath = path.join(__dirname, './markdown'),
     extname = ['.md'],
     outputFileName = '目录.md',
-    showExtname = true
+    showExtname = true,
+    ignoreDirectoryPattern
   } = options
 
   const catalog = getCatalog({
     dirPath: targetPath,
-    extname
+    extname,
+    ignoreDirectoryPattern
   })
 
   const content = getCatalogFileContent({

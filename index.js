@@ -1,7 +1,8 @@
 require('./utils').getCatalogFile({
-  targetPath: './markdown',
+  targetPath: 'E:\\BaiduSyncdisk\\学习笔记',
   extname: ['.md', '.txt'],
   outputFileName: '目录.md',
-  showExtname: true
+  showExtname: true,
+  ignoreDirectoryPattern: /\.assets$/
 })
 
