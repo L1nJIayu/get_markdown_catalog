@@ -25,14 +25,15 @@ npm run dev
 
 在`index.js`中，可以进行配置修改
 
-| 配置                   | 描述                                                         |
-| ----------------------  | ------------------------------------------------------------ |
-| targetPath             | 必填。目标目录路径，例如为`E:\\BaiduSyncdisk\\学习笔记`、`./markdown` |
-| extname                | 需要遍历的文件后缀（即文件类型），默认为`['.md']`,请以`.`开头 |
-| outputFileName         | 目录输入的最终文件名，默认为`目录.md`                        |
-| showExtname            | 输入的内容，文件名是否要显示后缀，默认为`true`               |
-| showExtname            | 输入的内容，文件名是否要显示后缀，默认为`true`               |
-| ignoreDirectoryPattern | 需要忽略的文件夹名称，正则表达式                             |
+| 配置                   | 说明                                                      | 类型 |
+| ----------------------  | ------------------------------------------------------------ | ----------------------  |
+| targetPath             | 必填。目标目录路径，例如为`E:\\BaiduSyncdisk\\学习笔记`、`./markdown` | string |
+| extname                | 需要遍历的文件后缀（即文件类型），默认为`['.md']`,请以`.`开头 | string[] |
+| outputFileName         | 目录输入的最终文件名，默认为`目录.md`                        | string |
+| showExtname            | 输入的内容，文件名是否要显示后缀，默认为`true`               | boolean |
+| showExtname            | 输入的内容，文件名是否要显示后缀，默认为`true`               | boolean |
+| ignoreDirectoryPattern | 需要忽略的文件夹名称，正则表达式，例如`/\.assets$/`          | Regex |
+| ignoreFilePattern | 需要忽略的文件名称，正则表达式，例如`/^README.md$/` | Regex |
 
 
 
@@ -44,7 +45,8 @@ require('./utils').getCatalogFile({
   extname: ['.md', '.txt'],
   outputFileName: '目录.md',
   showExtname: true,
-  ignoreDirectoryPattern: /\.assets$/
+  ignoreDirectoryPattern: /\.assets$/,
+  ignoreFilePattern: /^README.md$/
 })
 ```
 
@@ -52,4 +54,4 @@ require('./utils').getCatalogFile({
 
 ![image-20240108180511282](README.assets/image-20240108180511282.png)
 
-![image-20240108180448069](README.assets/image-20240108180448069.png)
+![image-20240108182531703](README.assets/image-20240108182531703.png)

@@ -7,7 +7,8 @@ function getCatalog (options) {
     dirPath,
     catalog,
     extname = ['.md'],
-    ignoreDirectoryPattern
+    ignoreDirectoryPattern,
+    ignoreFilePattern
   } = options
 
   if(typeof catalog === 'undefined') {
@@ -41,9 +42,10 @@ function getCatalog (options) {
           dirPath: path.join(dirPath, dirent.name),
           catalog: newCatalog,
           ignoreDirectoryPattern,
+          ignoreFilePattern,
           extname
         })
-      } else if (extname.includes(path.extname(dirent.name))) {
+      } else if (extname.includes(path.extname(dirent.name)) && !(ignoreFilePattern && ignoreFilePattern.test(dirent.name))) {
         catalog.files.push(path.join(dirPath, dirent.name))
       }
 
@@ -107,7 +109,8 @@ function getCatalogFile (options) {
     extname = ['.md'],
     outputFileName = '目录.md',
     showExtname = true,
-    ignoreDirectoryPattern
+    ignoreDirectoryPattern,
+    ignoreFilePattern
   } = options
 
   if(typeof targetPath === 'undefined') {
@@ -117,7 +120,8 @@ function getCatalogFile (options) {
   const catalog = getCatalog({
     dirPath: targetPath,
     extname,
-    ignoreDirectoryPattern
+    ignoreDirectoryPattern,
+    ignoreFilePattern
   })
 
   const content = getCatalogFileContent({
